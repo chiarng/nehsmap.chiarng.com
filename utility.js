@@ -42,6 +42,7 @@ function initMap() {
         map.setCenter(initialLocation);
     });
 	}
+	addMarker(initialLocation, map);
 };
 
 // The Great Initializer
