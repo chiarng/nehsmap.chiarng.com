@@ -1,6 +1,7 @@
 // JavaScript Document
 
 // variable declarations
+var map;
 
 // cross-browser support for attaching event listeners
 function addEvent(element, event, func) {
@@ -30,9 +31,22 @@ function signOut() {
     });
 };
 
+function initMap() {
+	map = new google.maps.Map(document.getElementById('map'), {
+		center: {lat: -34.397, lng: 150.644},
+		zoom: 8
+	});
+	if (navigator.geolocation) {
+     	navigator.geolocation.getCurrentPosition(function (position) {
+        initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        map.setCenter(initialLocation);
+    });
+	}
+};
+
 // The Great Initializer
 function init() {
-
+	initMap();
 };
 
 // window.onload
