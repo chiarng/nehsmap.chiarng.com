@@ -32,13 +32,7 @@ function signOut() {
     });
 };
 
-function initMap() {
-	if (navigator.geolocation) {
-     	navigator.geolocation.getCurrentPosition(function (position) {
-        	initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    	});
-	};
-
+function initMap(initialLocation) {
 	var map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 13,
 	    center: initialLocation
@@ -64,7 +58,12 @@ function toggleBounce() {
 
 // The Great Initializer
 function init() {
-	initMap();
+	if (navigator.geolocation) {
+     	navigator.geolocation.getCurrentPosition(function (position) {
+        	initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    	});
+	};
+	initMap(initialLocation);
 };
 
 // window.onload
