@@ -2,6 +2,7 @@
 
 // variable declarations
 var map;
+var marker;
 
 // cross-browser support for attaching event listeners
 function addEvent(element, event, func) {
@@ -32,27 +33,32 @@ function signOut() {
 };
 
 function initMap() {
-	map = new google.maps.Map(document.getElementById('map'), {
-		center: {lat: -34.397, lng: 150.644},
-		zoom: 8
+	var map = new google.maps.Map(document.getElementById('map'), {
+		zoom: 13,
+		if (navigator.geolocation) {
+	     	navigator.geolocation.getCurrentPosition(function (position) {
+	        	initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+	        	map.setCenter(initialLocation);
+	    	});
+		};
 	});
-	if (navigator.geolocation) {
-     	navigator.geolocation.getCurrentPosition(function (position) {
-        initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        map.setCenter(initialLocation);
-    });
-	}
-	addMarker(initialLocation, map);
+
+	marker = new google.maps.Marker({
+		map: map,
+		draggable: true,
+		animation: google.maps.Animation.DROP,
+		position: initialLocation
+	});
+
+	marker.addListener('click', toggleBounce);
 };
 
-function addMarker(location, map) {
-  // Add the marker at the clicked location, and add the next-available label
-  // from the array of alphabetical characters.
-  var marker = new google.maps.Marker({
-    position: location,
-    label: labels[labelIndex++ % labels.length],
-    map: map
-  });
+function toggleBounce() {
+	if (marker.getAnimation() !== null) {
+		marker.setAnimation(null);
+	} else {
+		marker.setAnimation(google.maps.Animation.BOUNCE);
+	}
 };
 
 // The Great Initializer
