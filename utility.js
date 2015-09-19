@@ -37,14 +37,12 @@ function initMap(initialLocation) {
 		zoom: 13,
 	    center: initialLocation
 	});
-
 	marker = new google.maps.Marker({
 		map: map,
 		draggable: true,
 		animation: google.maps.Animation.DROP,
 		position: initialLocation
 	});
-
 	marker.addListener('click', toggleBounce);
 };
 
@@ -56,14 +54,18 @@ function toggleBounce() {
 	}
 };
 
-// The Great Initializer
-function init() {
+function grabLocation(callback) {
 	if (navigator.geolocation) {
      	navigator.geolocation.getCurrentPosition(function (position) {
         	initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        	callback(initialLocation);
     	});
 	};
-	initMap(initialLocation);
+};
+
+// The Great Initializer
+function init() {
+	grabLocation(initMap);
 };
 
 // window.onload
