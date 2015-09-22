@@ -96,7 +96,7 @@ function postHTTPObject(url, params, callback) {
 // The Great Initializer
 function init() {
 	grabLocation(initMap);
-	addEvent(document.getElementById("updateButton"),'click',postHTTPObject())
+	//addEvent(document.getElementById("updateButton"),'click',postHTTPObject())
 };
 
 // window.onload
