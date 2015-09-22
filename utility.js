@@ -63,9 +63,40 @@ function grabLocation(callback) {
 	};
 };
 
+function postHTTPObject(url, params, callback) {
+	var request = false;
+	if(window.XMLHttpRequest) { 
+		var request = new XMLHttpRequest();
+	} else if(window.ActiveXObject) {
+		try {
+			var request = new ActiveXObject("Msxml2.XMLHTTP");
+		} catch(e) {
+			try {
+				var request = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch(e) {
+				request = false;
+			}
+		}
+	};
+	if (request) {
+		request.open('POST', url, true);
+		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		http.setRequestHeader("Content-length", params.length);
+		http.setRequestHeader("Connection", "close");
+		request.send(params);
+		request.onreadystatechange = function() {
+			if (request.readyState != 4) return false;
+			if (request.status == 200 || request.status == 304) {
+				callback(request.responseText)
+			}
+		}
+	};
+};
+
 // The Great Initializer
 function init() {
 	grabLocation(initMap);
+	addEvent(document.getElementById("updateButton"),'click',postHTTPObject())
 };
 
 // window.onload
